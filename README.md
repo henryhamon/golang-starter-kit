@@ -17,7 +17,6 @@ Golang Starter Kit
 * [Gomniauth](https://github.com/stretchr/gomniauth)
 * [go-i18n](https://github.com/nicksnyder/go-i18n/)
 * [Viper](https://github.com/spf13/viper)
-* [Ozzo-Routing]()
 
 #### Tests:
 * [Ginkgo](https://github.com/onsi/ginkgo)
