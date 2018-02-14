@@ -16,8 +16,4 @@ Golang Starter Kit
 * [Logrus](https://github.com/sirupsen/logrus)
 * [Gomniauth](https://github.com/stretchr/gomniauth)
 * [go-i18n](https://github.com/nicksnyder/go-i18n/)
-* [Viper](https://github.com/spf13/viper)
-
-#### Tests:
-* [Ginkgo](https://github.com/onsi/ginkgo)
-* [Gomega](https://github.com/onsi/gomega)
+* [Configor](https://github.com/jinzhu/configor)
