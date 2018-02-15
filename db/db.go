@@ -10,6 +10,8 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/qor/validations"
 
+	"golang-starter-kit/models"
+
 	_ "github.com/jinzhu/gorm/dialects/mssql"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -56,7 +58,9 @@ func Connect() *gorm.DB {
 	}
 
 	if Migrate == "1" {
-		db.AutoMigrate()
+		db.AutoMigrate(
+			&models.User{},
+		)
 
 	}
 	return db
