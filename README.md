@@ -17,3 +17,8 @@ Golang Starter Kit
 * [Gomniauth](https://github.com/stretchr/gomniauth)
 * [go-i18n](https://github.com/nicksnyder/go-i18n/)
 * [Configor](https://github.com/jinzhu/configor)
+
+#### Test ####
+
+* [Testify](https://github.com/stretchr/testify)
+* [GoFight](https://github.com/appleboy/gofight)
