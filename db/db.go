@@ -17,8 +17,15 @@ import (
 
 // Config is loaded from configuration file
 var Config = struct {
-	Adapter  string `required:"true"`
-	Database string `required:"true"`
+	Test struct {
+		Adapter  string `required:"true"`
+		Database string `required:"true"`
+	}
+
+	Production struct {
+		Adapter  string `required:"true"`
+		Database string `required:"true"`
+	}
 }{}
 
 var (
@@ -36,7 +43,7 @@ func Connect() *gorm.DB {
 	flag.Parse()
 	configor.Load(&Config, "config.yml")
 
-	db, err := gorm.Open(Config.Adapter, Config.Database)
+	db, err := gorm.Open(Config.Production.Adapter, Config.Production.Database)
 	if err != nil {
 		log.Fatalf("Got error when connect database, the error is '%v'", err)
 	}
