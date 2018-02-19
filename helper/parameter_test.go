@@ -38,10 +38,11 @@ func TestValidateParams(t *testing.T) {
 
 func TestParameters(t *testing.T) {
 	c, _ := gin.CreateTestContext(httptest.NewRecorder())
-	c.Request, _ = http.NewRequest("GET", "http://test.com/?limit=10&order=desc", nil)
+	c.Request, _ = http.NewRequest("GET", "http://test.com/?limit=10&order=desc&page=4", nil)
 
 	params, err := NewParameter(c)
 	assert.NoError(t, err)
 	assert.Equal(t, 10, params.Limit)
 	assert.Equal(t, "desc", params.Order)
+	assert.Equal(t, 4, params.Page)
 }

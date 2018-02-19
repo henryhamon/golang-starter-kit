@@ -9,12 +9,9 @@ import (
 
 type Parameter struct {
 	Params       map[string]string
-	Sort         string
 	Limit        int
 	Page         int
-	LastID       int
 	Order        string
-	IsLastID     bool
 	TotalRecords int
 	TotalPages   int64
 }
@@ -22,6 +19,7 @@ type Parameter struct {
 const (
 	defaultLimit = "25"
 	defaultOrder = "asc"
+	defaultPage  = "1"
 )
 
 func NewParameter(c *gin.Context) (*Parameter, error) {
@@ -44,7 +42,11 @@ func (self *Parameter) initialize(c *gin.Context) error {
 	self.Limit = int(math.Max(1, math.Min(10000, float64(limit))))
 	self.Order = c.DefaultQuery("order", defaultOrder)
 
-	self.Page = 1
+	page, err := validate(c.DefaultQuery("page", defaultPage))
+	if err != nil {
+		return err
+	}
+	self.Page = int(math.Max(1, float64(page)))
 
 	return nil
 }
