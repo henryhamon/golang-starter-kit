@@ -1,5 +1,7 @@
 package helper
 
+import "strconv"
+
 type Parameter struct {
 	Params       map[string]string
 	Sort         string
@@ -25,6 +27,19 @@ func NewParameter() (*Parameter, error) {
 func (self *Parameter) initialize() error {
 	self.Limit = 25
 	self.Page = 1
+	self.Order = "asc"
 
 	return nil
+}
+
+func validate(s string) (int, error) {
+	if s == "" {
+		return -1, nil
+	}
+
+	num, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, err
+	}
+	return num, nil
 }
