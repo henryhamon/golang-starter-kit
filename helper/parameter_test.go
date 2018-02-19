@@ -3,11 +3,18 @@ package helper
 import (
 	"testing"
 
+	"net/http"
+	"net/http/httptest"
+
+	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestDefaultParameters(t *testing.T) {
-	params, err := NewParameter()
+	c, _ := gin.CreateTestContext(httptest.NewRecorder())
+	c.Request, _ = http.NewRequest("GET", "http://test.com/", nil)
+
+	params, err := NewParameter(c)
 	assert.NoError(t, err)
 
 	assert.Equal(t, 1, params.Page)
@@ -27,4 +34,13 @@ func TestValidateParams(t *testing.T) {
 	number, err = validate("abcd")
 	assert.Error(t, err)
 	assert.Equal(t, 0, number)
+}
+
+func TestParameters(t *testing.T) {
+	c, _ := gin.CreateTestContext(httptest.NewRecorder())
+	c.Request, _ = http.NewRequest("GET", "http://test.com/?limit=10", nil)
+
+	params, err := NewParameter(c)
+	assert.NoError(t, err)
+	assert.Equal(t, 10, params.Limit)
 }
