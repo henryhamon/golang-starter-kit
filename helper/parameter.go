@@ -21,6 +21,7 @@ type Parameter struct {
 
 const (
 	defaultLimit = "25"
+	defaultOrder = "asc"
 )
 
 func NewParameter(c *gin.Context) (*Parameter, error) {
@@ -41,9 +42,9 @@ func (self *Parameter) initialize(c *gin.Context) error {
 	}
 
 	self.Limit = int(math.Max(1, math.Min(10000, float64(limit))))
+	self.Order = c.DefaultQuery("order", defaultOrder)
 
 	self.Page = 1
-	self.Order = "asc"
 
 	return nil
 }
