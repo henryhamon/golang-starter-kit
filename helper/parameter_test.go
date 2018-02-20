@@ -46,3 +46,12 @@ func TestParameters(t *testing.T) {
 	assert.Equal(t, "desc", params.Order)
 	assert.Equal(t, 4, params.Page)
 }
+
+func TestParams(t *testing.T) {
+	c, _ := gin.CreateTestContext(httptest.NewRecorder())
+	c.Request, _ = http.NewRequest("GET", "http://test.com/?page=5&foo=bar", nil)
+
+	params, err := NewParameter(c)
+	assert.NoError(t, err)
+	assert.Equal(t, "bar", params.Params["foo"])
+}

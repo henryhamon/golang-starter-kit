@@ -48,6 +48,14 @@ func (self *Parameter) initialize(c *gin.Context) error {
 	}
 	self.Page = int(math.Max(1, float64(page)))
 
+	self.Params = make(map[string]string)
+	c.Request.ParseForm()
+	for key, _ := range c.Request.Form {
+		if !StringInSlice(key, []string{"limit", "page", "order", "total_pages", "total_records"}) {
+			self.Params[key] = c.Query(key)
+		}
+	}
+
 	return nil
 }
 
