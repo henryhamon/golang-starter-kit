@@ -1,12 +1,19 @@
 package models
 
 import (
+	"fmt"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 
+	"golang-starter-kit/helper"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/configor"
 	"github.com/jinzhu/gorm"
 	"github.com/qor/validations"
-	"github.com/stretchr/testify/assert"
 
 	_ "github.com/jinzhu/gorm/dialects/mssql"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -82,4 +89,48 @@ func TestValidations(t *testing.T) {
 		assert.Contains(t, err.Error(), "Duplicate")
 	}
 
+}
+
+func TestListUsers(t *testing.T) {
+	db, err := SetupDB()
+	assert.NoError(t, err)
+
+	for i := 0; i < 5; i++ {
+		user := User{}
+		user.Name = fmt.Sprintf("%v", i)
+		user.Email = fmt.Sprintf("%v@xyz.com", i)
+		user.Username = fmt.Sprintf("%v", i)
+		db.Create(&user)
+	}
+
+	c, _ := gin.CreateTestContext(httptest.NewRecorder())
+	c.Request, _ = http.NewRequest("GET", "http://test.com/?limit=3", nil)
+
+	params, err := helper.NewParameter(c)
+	assert.NoError(t, err)
+
+	users, err := ListUsers(db, params)
+	assert.Equal(t, 3, len(users))
+}
+
+func TestListOnlyOneUser(t *testing.T) {
+	db, err := SetupDB()
+	assert.NoError(t, err)
+
+	for i := 0; i < 5; i++ {
+		user := User{}
+		user.Name = fmt.Sprintf("%v", i)
+		user.Email = fmt.Sprintf("%v@xyz.com", i)
+		user.Username = fmt.Sprintf("%v", i)
+		db.Create(&user)
+	}
+
+	c, _ := gin.CreateTestContext(httptest.NewRecorder())
+	c.Request, _ = http.NewRequest("GET", "http://test.com/?limit=3&name=1", nil)
+
+	params, err := helper.NewParameter(c)
+	assert.NoError(t, err)
+
+	users, err := ListUsers(db, params)
+	assert.Equal(t, 1, len(users))
 }
