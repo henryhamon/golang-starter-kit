@@ -7,43 +7,19 @@ import (
 	"testing"
 
 	"golang-starter-kit/helper"
+	"golang-starter-kit/tester"
 
 	"github.com/stretchr/testify/assert"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/configor"
-	"github.com/jinzhu/gorm"
-	"github.com/qor/validations"
 
 	_ "github.com/jinzhu/gorm/dialects/mssql"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-func SetupDB() (*gorm.DB, error) {
-
-	var testconfig = struct {
-		Test struct {
-			Adapter  string `required:"true"`
-			Database string `required:"true"`
-		}
-	}{}
-
-	configor.Load(&testconfig, "../config.yml")
-
-	db, err := gorm.Open(testconfig.Test.Adapter, testconfig.Test.Database)
-
-	if err == nil {
-		validations.RegisterCallbacks(db)
-		db.DropTable(&User{})
-		db.CreateTable(&User{})
-	}
-
-	return db, err
-}
-
 func TestValidations(t *testing.T) {
-	db, err := SetupDB()
+	db, err := tester.SetupDB()
 	if err != nil {
 		t.Errorf("database connection error")
 		return
@@ -92,7 +68,7 @@ func TestValidations(t *testing.T) {
 }
 
 func TestListUsers(t *testing.T) {
-	db, err := SetupDB()
+	db, err := tester.SetupDB()
 	assert.NoError(t, err)
 
 	for i := 0; i < 5; i++ {
@@ -114,7 +90,7 @@ func TestListUsers(t *testing.T) {
 }
 
 func TestListOnlyOneUser(t *testing.T) {
-	db, err := SetupDB()
+	db, err := tester.SetupDB()
 	assert.NoError(t, err)
 
 	for i := 0; i < 5; i++ {
