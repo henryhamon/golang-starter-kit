@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	db "golang-starter-kit/db"
+	"golang-starter-kit/server"
 	"os"
 	"strconv"
 
@@ -32,7 +33,7 @@ func main() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	router = gin.Default()
+	router := server.Setup(Db)
 
 	port := "8080"
 
