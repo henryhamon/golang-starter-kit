@@ -11,10 +11,8 @@ import (
 )
 
 var (
-	router *gin.Engine
-	Port   string
-	Debug  string
-	NoMail string
+	Port  string
+	Debug string
 )
 
 func init() {
