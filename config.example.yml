@@ -1,0 +1,7 @@
+test:
+  adapter: mysql
+  database: root:xyz@/my_test?charset=utf8&parseTime=True&loc=Local
+
+dev:
+  adapter: postgres
+  database: dbname=mydb sslmode=disable user=mydbuser password=mypwd
