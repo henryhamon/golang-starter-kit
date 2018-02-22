@@ -13,7 +13,7 @@ func InitializeRoutes(r *gin.Engine) {
 
 		userRoutes := v1.Group("user")
 		{
-			userRoutes.GET("/new", middleware.Cors, handlers.NewUser)
+			userRoutes.GET("/new", middleware.Cors, handlers.CreateUser)
 			userRoutes.GET("/edit/:userId", middleware.Cors, handlers.GetUser)
 			userRoutes.PUT("/:userId", middleware.Cors, handlers.UpdateUser)
 			userRoutes.DELETE("/:userId", middleware.Cors, handlers.DeleteUser)
