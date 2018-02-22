@@ -6,6 +6,8 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/qor/validations"
 
+	"golang-starter-kit/router"
+
 	_ "github.com/jinzhu/gorm/dialects/mssql"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -34,6 +36,15 @@ func SetupDB() (*gorm.DB, error) {
 func GinEngine(db *gorm.DB) *gin.Engine {
 	gin.SetMode(gin.TestMode)
 	r := gin.New()
+	r.Use(setDb(db))
+	router.InitializeRoutes(r)
 
 	return r
+}
+
+func setDb(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Set("DB", db)
+		c.Next()
+	}
 }
