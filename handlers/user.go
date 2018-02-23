@@ -50,11 +50,13 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
+	id := user.ID
 	if err := c.Bind(&user); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 
+	user.ID = id // TODO: Refactor
 	if err := db.Save(&user).Error; err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return

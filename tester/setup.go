@@ -1,6 +1,7 @@
 package tester
 
 import (
+	"io"
 	"net/http"
 	"net/http/httptest"
 
@@ -52,8 +53,14 @@ func setDb(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
-func PerformRequest(r http.Handler, method, path string) *httptest.ResponseRecorder {
+func PerformRequest(r http.Handler, method, path string, args ...io.Reader) *httptest.ResponseRecorder {
+
 	req, _ := http.NewRequest(method, path, nil)
+	if len(args) > 0 {
+		req, _ = http.NewRequest(method, path, args[0])
+		req.Header.Set("Content-Type", "application/json")
+	}
+
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	return w
