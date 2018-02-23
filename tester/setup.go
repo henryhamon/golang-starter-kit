@@ -1,6 +1,9 @@
 package tester
 
 import (
+	"net/http"
+	"net/http/httptest"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/configor"
 	"github.com/jinzhu/gorm"
@@ -47,4 +50,11 @@ func setDb(db *gorm.DB) gin.HandlerFunc {
 		c.Set("DB", db)
 		c.Next()
 	}
+}
+
+func PerformRequest(r http.Handler, method, path string) *httptest.ResponseRecorder {
+	req, _ := http.NewRequest(method, path, nil)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	return w
 }
