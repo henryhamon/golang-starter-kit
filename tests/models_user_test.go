@@ -26,6 +26,8 @@ func TestValidations(t *testing.T) {
 		return
 	}
 	defer db.Close()
+	db.DropTable(&models.User{})
+	db.CreateTable(&models.User{})
 
 	name := "Luke Skywalker"
 	email := "luke@skywalker.com"
