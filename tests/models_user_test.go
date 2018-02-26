@@ -1,4 +1,4 @@
-package models
+package tests
 
 import (
 	"fmt"
@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"golang-starter-kit/helper"
+	"golang-starter-kit/models"
 	"golang-starter-kit/tester"
 
 	"github.com/stretchr/testify/assert"
@@ -30,7 +31,7 @@ func TestValidations(t *testing.T) {
 	email := "luke@skywalker.com"
 	pwd := "123456"
 
-	user := User{}
+	user := models.User{}
 	if err = db.Save(&user).Error; err == nil {
 		t.Errorf("Must validate required fields")
 	}
@@ -59,7 +60,7 @@ func TestValidations(t *testing.T) {
 	user.Pwd = pwd
 	assert.NoError(t, db.Save(&user).Error)
 
-	another := User{Name: name, Email: email, Pwd: pwd}
+	another := models.User{Name: name, Email: email, Pwd: pwd}
 	err = db.Save(&another).Error
 	if assert.Error(t, err) {
 		assert.Contains(t, err.Error(), "Duplicate")
@@ -72,7 +73,7 @@ func TestListUsers(t *testing.T) {
 	assert.NoError(t, err)
 
 	for i := 0; i < 5; i++ {
-		user := User{}
+		user := models.User{}
 		user.Name = fmt.Sprintf("%v", i)
 		user.Email = fmt.Sprintf("%v@xyz.com", i)
 		user.Username = fmt.Sprintf("%v", i)
@@ -85,7 +86,7 @@ func TestListUsers(t *testing.T) {
 	params, err := helper.NewParameter(c)
 	assert.NoError(t, err)
 
-	users, err := ListUsers(db, params)
+	users, err := models.ListUsers(db, params)
 	assert.Equal(t, 3, len(users))
 }
 
@@ -94,7 +95,7 @@ func TestListOnlyOneUser(t *testing.T) {
 	assert.NoError(t, err)
 
 	for i := 0; i < 5; i++ {
-		user := User{}
+		user := models.User{}
 		user.Name = fmt.Sprintf("%v", i)
 		user.Email = fmt.Sprintf("%v@xyz.com", i)
 		user.Username = fmt.Sprintf("%v", i)
@@ -107,6 +108,6 @@ func TestListOnlyOneUser(t *testing.T) {
 	params, err := helper.NewParameter(c)
 	assert.NoError(t, err)
 
-	users, err := ListUsers(db, params)
+	users, err := models.ListUsers(db, params)
 	assert.Equal(t, 1, len(users))
 }
